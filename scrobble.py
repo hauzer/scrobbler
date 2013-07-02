@@ -1,28 +1,38 @@
-import lfm
 import argparse
 from tokenize_args.tokenize_args import tokenize_args
+import lfm
 
-parser = argparse.ArgumentParser(prog = "scrobble",
-                                 description="A Last.fm scrobbler and a now-playing status updater.")
 
-parser.add_argument("-s", "--scrobble", action="append")
+scrobble_parser = argparse.ArgumentParser(usage = "A scrobble consists of three or more\n" \
+                                                  "options specified below. Pass these " \
+                                                  "quoted,\nand as you would to a program.",
+                                          add_help = False)
+
+scrobble_parser.add_argument("artist", metavar = "Artist")
+scrobble_parser.add_argument("track", metavar = "Track")
+scrobble_parser.add_argument("timestamp", metavar = "Timestamp")
+scrobble_parser.add_argument("-a", "--album", metavar = "Album")
+scrobble_parser.add_argument("-d", "--duration", metavar = "Duration")
+scrobble_parser.add_argument("-m", "--mbid", metavar = "MBID")
+scrobble_parser.add_argument("-t", "--track-number", metavar = "TrackNumber", dest="tracknumber")
+scrobble_parser.add_argument("-aa", "--album-artist", metavar = "AlbumArtist", dest="albumartist")
+scrobble_parser.add_argument("-s", "--stream-id", metavar = "StreamID", dest="streamid")
+scrobble_parser.add_argument("-c", "--chosen-by-user", metavar = "ChosenByUser?",
+                             choices = ["0", "1"], dest="chosenbyuser")
+scrobble_parser.add_argument("-cx", "--context", metavar = "Context")
+
+
+parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-playing status updater.",
+                                 formatter_class = argparse.RawTextHelpFormatter)
+
+parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"Artist Track Tstamp ...\"",
+                    dest = "scrobbles", help = scrobble_parser.format_help())
+
+
 args = parser.parse_args()
 
-scrobble_parser = argparse.ArgumentParser()
-scrobble_parser.add_argument("artist")
-scrobble_parser.add_argument("track")
-scrobble_parser.add_argument("timestamp")
-scrobble_parser.add_argument("-a", "--album")
-scrobble_parser.add_argument("-d", "--duration")
-scrobble_parser.add_argument("-m", "--mbid")
-scrobble_parser.add_argument("-t", "--tracknumber")
-scrobble_parser.add_argument("-aa", "--albumartist")
-scrobble_parser.add_argument("-s", "--streamid")
-scrobble_parser.add_argument("-c", "--chosenbyuser")
-scrobble_parser.add_argument("-cx", "--context")
-
 scrobbles = []
-for scrobble in args.scrobble:
+for scrobble in args.scrobbles:
     scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(tokenize_args(scrobble)))))
 
 
