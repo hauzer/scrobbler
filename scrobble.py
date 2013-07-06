@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
-from tokenize_args.tokenize_args import tokenize_args
+from tokenize_args import tokenize_args
 import lfm
 
 
@@ -47,11 +47,11 @@ parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist t
 
 args = parser.parse_args()
 
-app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969")
-app.sk = lfm.api.auth.get_mobile_session(args.user, args.password)["key"]
+app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "data.db")
+app.sk = app.auth.get_mobile_session(args.user, args.password)["key"]
 
 scrobbles = []
 for scrobble in args.scrobbles:
     scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(tokenize_args(scrobble)))))
 
-lfm.api.track.scrobble(scrobbles)
+app.track.scrobble(scrobbles)
