@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import sqlite3
+import webbrowser
 from tokenize_args import tokenize_args
 import lfm
 
@@ -41,17 +43,62 @@ parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-pl
                                  formatter_class = argparse.RawTextHelpFormatter)
 
 parser.add_argument("user")
-parser.add_argument("password")
+parser.add_argument("-p", "--password", metavar = "password")
 parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
                     dest = "scrobbles", help = scrobble_parser.format_help())
 
 args = parser.parse_args()
 
-app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "data.db")
-app.sk = app.auth.get_mobile_session(args.user, args.password)["key"]
 
 scrobbles = []
 for scrobble in args.scrobbles:
     scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(tokenize_args(scrobble)))))
+
+
+app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "lfm.dat")
+
+dbconn = sqlite3.connect("sessions.db")
+dbcur = dbconn.cursor()
+
+try:
+    dbcur.execute("create table sessions (user text primary key, key text)")
+except sqlite3.OperationalError:
+    pass
+
+if args.password is not None:
+    session = app.auth.get_mobile_session(args.user, args.password)
+    
+else:
+    dbcur.execute("select * from sessions where user == ?", (args.user,))
+    session = dbcur.fetchone()
+    
+    try:
+        app.sk = session[1]
+        
+    except TypeError:
+        token = app.auth.get_token()
+        
+        input("\nThe Last.fm authentication page will be opened now, or its URL printed here.\nPress enter to continue.\n")
+        
+        try:
+            webbrowser.open(token.url)
+        except webbrowser.Error:
+            print(token.url)
+    
+        input("Press enter after granting access.")
+        session = app.auth.get_session(token)
+
+if app.sk is None:
+    app.sk = session["key"]
+    
+    try:
+        dbcur.execute("insert into sessions (user, key) values (?, ?)", (session["name"], session["key"]))
+    except sqlite3.IntegrityError:
+        pass
+
+dbconn.commit()
+dbcur.close()
+dbconn.close()
+
 
 app.track.scrobble(scrobbles)
