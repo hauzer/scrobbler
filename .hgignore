@@ -1,3 +1,4 @@
 syntax: glob
 .*
-data.db
+*.dat
+*.db
