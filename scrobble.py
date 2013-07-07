@@ -39,6 +39,22 @@ scrobble_parser.add_argument("-c", "--chosen-by-user", action = "store_true", de
 scrobble_parser.add_argument("-cx", "--context", metavar = "context")
 
 
+unp_parser = argparse.ArgumentParser(usage = "A \"now-playing\" status consists of\n" \
+                                             "two or more options specified below.\n" \
+                                             "Pass these quoted, and as you would to\n" \
+                                             "a program.",
+                                     add_help = False)
+
+unp_parser.add_argument("artist", metavar = "artist")
+unp_parser.add_argument("track", metavar = "track")
+unp_parser.add_argument("-a", "--album", metavar = "album")
+unp_parser.add_argument("-d", "--duration", metavar = "duration")
+unp_parser.add_argument("-m", "--mbid", metavar = "mbid")
+unp_parser.add_argument("-t", "--track-number", metavar = "track_number", dest = "tracknumber")
+unp_parser.add_argument("-aa", "--album-artist", metavar = "album_artist", dest="albumartist")
+unp_parser.add_argument("-cx", "--context", metavar = "context")
+
+
 parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-playing status updater.",
                                  formatter_class = argparse.RawTextHelpFormatter)
 
@@ -46,6 +62,8 @@ parser.add_argument("user")
 parser.add_argument("-p", "--password", metavar = "password")
 parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
                     dest = "scrobbles", help = scrobble_parser.format_help())
+parser.add_argument("-u", "--update-now-playing", metavar = "\"artist track -a album ...\"",
+                    dest = "nowplaying", help = unp_parser.format_help())
 
 args = parser.parse_args()
 
@@ -53,6 +71,8 @@ args = parser.parse_args()
 scrobbles = []
 for scrobble in args.scrobbles:
     scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(tokenize_args(scrobble)))))
+
+nowplaying = unp_parser.parse_args(tokenize_args(args.nowplaying))
 
 
 app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "lfm.dat")
@@ -101,4 +121,29 @@ dbcur.close()
 dbconn.close()
 
 
-app.track.scrobble(scrobbles)
+if scrobbles:
+    resp = app.track.scrobble(scrobbles)
+    
+    ignored = int(resp["@attr"]["ignored"])
+    
+    if ignored != 0:
+        accepted = int(resp["@attr"]["accepted"])
+        
+        if accepted == 0:
+            print("\nAll of the tracks have failed to scrobble:")
+            
+        else:
+            print("\nSome of the tracks have failed to scrobble:")
+            
+        scrobbles = resp["scrobble"]
+        for scrobble in scrobbles:
+            code = int(scrobble["ignoredMessage"]["code"])
+            
+            if code != 0:
+                message = scrobble["ignoredMessage"]["#text"]
+                artist  = scrobble["artist"]["#text"]
+                track   = scrobble["track"]["#text"]
+                
+                print("{} - {}: {}".format(artist, track, message))
+
+app.track.update_now_playing(**vars(nowplaying))
