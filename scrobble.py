@@ -1,3 +1,4 @@
+#
 # A Last.fm scrobbler and a now-playing status updater.
 # Copyright (C) 2013  Никола Вукосављевић
 #
@@ -13,12 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 
 import argparse
+import lfm
+import shlex
 import sqlite3
 import webbrowser
-import shlex
-import lfm
 
 
 scrobble_parser = argparse.ArgumentParser(usage = "A scrobble consists of three or more\n" \
@@ -62,19 +65,10 @@ parser.add_argument("user")
 parser.add_argument("-p", "--password", metavar = "password")
 parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
                     dest = "scrobbles", help = scrobble_parser.format_help())
-parser.add_argument("-u", "--update-now-playing", metavar = "\"artist track -a album ...\"",
+parser.add_argument("-u", "--update-now-playing", metavar = "\"artist track ...\"",
                     dest = "nowplaying", help = unp_parser.format_help())
 
 args = parser.parse_args()
-
-
-scrobbles = []
-if args.scrobbles is not None:
-    for scrobble in args.scrobbles:
-        scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(shlex.split(scrobble)))))
-
-if args.nowplaying is not None:
-    nowplaying = unp_parser.parse_args(shlex.split(args.nowplaying))
 
 
 app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "lfm.dat")
@@ -123,7 +117,11 @@ dbcur.close()
 dbconn.close()
 
 
-if scrobbles:
+if args.scrobbles is not None:
+    scrobbles = []
+    for scrobble in args.scrobbles:
+        scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(shlex.split(scrobble)))))
+        
     resp = app.track.scrobble(scrobbles)
     
     ignored = int(resp["@attr"]["ignored"])
@@ -148,7 +146,8 @@ if scrobbles:
                 
                 print("{} - {}: {}".format(artist, track, message))
 
-try:
+
+if args.nowplaying is not None:
+    nowplaying = unp_parser.parse_args(shlex.split(args.nowplaying))
+    
     app.track.update_now_playing(**vars(nowplaying))
-except NameError:
-    pass
