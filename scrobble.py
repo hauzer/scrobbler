@@ -17,7 +17,7 @@
 import argparse
 import sqlite3
 import webbrowser
-from tokenize_args import tokenize_args
+import shlex
 import lfm
 
 
@@ -69,10 +69,12 @@ args = parser.parse_args()
 
 
 scrobbles = []
-for scrobble in args.scrobbles:
-    scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(tokenize_args(scrobble)))))
+if args.scrobbles is not None:
+    for scrobble in args.scrobbles:
+        scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(shlex.split(scrobble)))))
 
-nowplaying = unp_parser.parse_args(tokenize_args(args.nowplaying))
+if args.nowplaying is not None:
+    nowplaying = unp_parser.parse_args(shlex.split(args.nowplaying))
 
 
 app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "lfm.dat")
@@ -146,4 +148,7 @@ if scrobbles:
                 
                 print("{} - {}: {}".format(artist, track, message))
 
-app.track.update_now_playing(**vars(nowplaying))
+try:
+    app.track.update_now_playing(**vars(nowplaying))
+except NameError:
+    pass
