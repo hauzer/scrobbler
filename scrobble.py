@@ -17,11 +17,20 @@
 #
 
 
+from appdirs import AppDirs
 import argparse
 import lfm
+import os.path
 import shlex
 import sqlite3
 import webbrowser
+
+
+dirs = AppDirs("scrobble", "hauzer", "1.0.0")
+os.makedirs(dirs.user_data_dir, exist_ok = True)
+
+sessions_db_file    = os.path.join(dirs.user_data_dir, "sessions.db")
+lfm_data_file       = os.path.join(dirs.user_data_dir, "lfm.dat")
 
 
 scrobble_parser = argparse.ArgumentParser(usage = "A scrobble consists of three or more\n" \
@@ -71,9 +80,10 @@ parser.add_argument("-u", "--update-now-playing", metavar = "\"artist track ...\
 args = parser.parse_args()
 
 
-app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", "lfm.dat")
+app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", lfm_data_file)
 
-dbconn = sqlite3.connect("sessions.db")
+
+dbconn = sqlite3.connect(sessions_db_file)
 dbcur = dbconn.cursor()
 
 try:
