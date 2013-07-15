@@ -1,6 +1,6 @@
 #
 # A Last.fm scrobbler and a now-playing status updater.
-# Copyright (C) 2013  Никола Вукосављевић
+# Copyright (C) 2013  Никола "hauzer" Вукосављевић
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import sqlite3
 import webbrowser
 
 
-dirs = AppDirs("scrobble", "hauzer", "1.0.0")
+dirs = AppDirs("scrobbler", "Никола \"hauzer\" Вукосављевић", "1.0.0")
 os.makedirs(dirs.user_data_dir, exist_ok = True)
 
 sessions_db_file    = os.path.join(dirs.user_data_dir, "sessions.db")
@@ -141,7 +141,6 @@ if args.scrobbles is not None:
         
         if accepted == 0:
             print("\nAll of the tracks have failed to scrobble:")
-            
         else:
             print("\nSome of the tracks have failed to scrobble:")
             
