@@ -1,6 +1,6 @@
 #
 # A Last.fm scrobbler and a now-playing status updater.
-# Copyright (C) 2013  Никола "hauzer" Вукосављевић
+# Copyright (C) 2013  Ð�Ð¸ÐºÐ¾Ð»Ð° "hauzer" Ð’ÑƒÐºÐ¾Ñ�Ð°Ð²Ñ™ÐµÐ²Ð¸Ñ›
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,117 +23,85 @@ import lfm
 import os.path
 import shlex
 import sqlite3
+import time
 import webbrowser
 
 
-dirs = AppDirs("scrobbler", "Никола \"hauzer\" Вукосављевић", "1.0.0")
-os.makedirs(dirs.user_data_dir, exist_ok = True)
-
-sessions_db_file    = os.path.join(dirs.user_data_dir, "sessions.db")
-lfm_data_file       = os.path.join(dirs.user_data_dir, "lfm.dat")
-
-
-scrobble_parser = argparse.ArgumentParser(usage = "A scrobble consists of three or more\n" \
-                                                  "options specified below. Pass these " \
-                                                  "quoted,\nand as you would to a program.",
-                                          add_help = False)
-
-scrobble_parser.add_argument("artist", metavar = "artist")
-scrobble_parser.add_argument("track", metavar = "track")
-scrobble_parser.add_argument("timestamp", metavar = "timestamp")
-scrobble_parser.add_argument("-a", "--album", metavar = "album")
-scrobble_parser.add_argument("-d", "--duration", metavar = "duration")
-scrobble_parser.add_argument("-m", "--mbid", metavar = "mbid")
-scrobble_parser.add_argument("-t", "--track-number", metavar = "track_number", dest="tracknumber")
-scrobble_parser.add_argument("-aa", "--album-artist", metavar = "album_artist", dest="albumartist")
-scrobble_parser.add_argument("-s", "--stream-id", metavar = "stream_id", dest="streamid")
-scrobble_parser.add_argument("-c", "--chosen-by-user", action = "store_true", dest="chosenbyuser")
-scrobble_parser.add_argument("-cx", "--context", metavar = "context")
-
-
-unp_parser = argparse.ArgumentParser(usage = "A \"now-playing\" status consists of\n" \
-                                             "two or more options specified below.\n" \
-                                             "Pass these quoted, and as you would to\n" \
-                                             "a program.",
-                                     add_help = False)
-
-unp_parser.add_argument("artist", metavar = "artist")
-unp_parser.add_argument("track", metavar = "track")
-unp_parser.add_argument("-a", "--album", metavar = "album")
-unp_parser.add_argument("-d", "--duration", metavar = "duration")
-unp_parser.add_argument("-m", "--mbid", metavar = "mbid")
-unp_parser.add_argument("-t", "--track-number", metavar = "track_number", dest = "tracknumber")
-unp_parser.add_argument("-aa", "--album-artist", metavar = "album_artist", dest="albumartist")
-unp_parser.add_argument("-cx", "--context", metavar = "context")
-
-
-parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-playing status updater.",
-                                 formatter_class = argparse.RawTextHelpFormatter)
-
-parser.add_argument("user")
-parser.add_argument("-p", "--password", metavar = "password")
-parser.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
-                    dest = "scrobbles", help = scrobble_parser.format_help())
-parser.add_argument("-u", "--update-now-playing", metavar = "\"artist track ...\"",
-                    dest = "nowplaying", help = unp_parser.format_help())
-
-args = parser.parse_args()
-
-
-app = lfm.App("b3e7abc138f65a43803f887aeb36b9f6", "d60a1a4d704b71c0e8e5bac98d793969", lfm_data_file)
-
-
-dbconn = sqlite3.connect(sessions_db_file)
-dbcur = dbconn.cursor()
-
-try:
-    dbcur.execute("create table sessions (user text primary key, key text)")
-except sqlite3.OperationalError:
+class Error(Exception):
     pass
 
-if args.password is not None:
-    session = app.auth.get_mobile_session(args.user, args.password)
-    
-else:
-    dbcur.execute("select * from sessions where user == ?", (args.user,))
-    session = dbcur.fetchone()
-    
-    try:
-        app.sk = session[1]
+
+def user_exists(dbc, user):
+    dbc.execute("select exists(select * from sessions where user == ?)", (user,))
+    return bool(dbc.fetchone()[0])
+
+
+def auth(app, dbc, user):
+    if user_exists(dbc, user):
+        dbc.execute("select key from sessions where user == ?", (args.user,))
+        app.sk = dbc.fetchone()[0]
         
-    except TypeError:
+    else:
+        raise Error("The user \"{}\" wasn't found in the database.\n" \
+                    "Add a session via \"session-add\" first.".format(args.user))
+    
+
+def cmd_session_add(app, dbc, args):
+    error = "Could not add user \"{}\" to the database; already exists."
+    
+    if args.user is not None:
+        if user_exists(dbc, args.user):
+            raise Error(error.format(args.user))
+    
+    if args.user is None or (args.user is not None and (args.pwd is None and args.sk is None)):
         token = app.auth.get_token()
         
-        input("\nThe Last.fm authentication page will be opened now, or its URL printed here.\nPress enter to continue.\n")
+        input("The Last.fm authentication page will be opened, or its URL printed here.\nPress enter to continue.")
         
         try:
             webbrowser.open(token.url)
         except webbrowser.Error:
             print(token.url)
     
+        time.sleep(1)
         input("Press enter after granting access.")
         session = app.auth.get_session(token)
-
-if app.sk is None:
-    app.sk = session["key"]
+        
+    elif args.pwd is not None:
+        session = app.auth.get_mobile_session(args.user, args.pwd)
     
-    try:
-        dbcur.execute("insert into sessions (user, key) values (?, ?)", (session["name"], session["key"]))
-    except sqlite3.IntegrityError:
-        pass
+    elif args.sk is not None:
+        session     = {
+                       "name":  args.user,
+                       "key":   args.sk,
+                       }
+    
+    print()
+    
+    if not user_exists(dbc, session["name"]):
+        dbc.execute("insert into sessions (user, key) values (?, ?)", (session["name"], session["key"]))
+    else:
+        raise Error(error.format(session["name"]))
 
-dbconn.commit()
-dbcur.close()
-dbconn.close()
+
+def cmd_session_list(app, dbc, args):
+    dbc.execute("select * from sessions")
+    for (user, key) in dbc.fetchall():
+        print("{} | {}".format(user, key))
 
 
-if args.scrobbles is not None:
+def cmd_session_rm(app, dbc, args):
+    dbc.execute("delete from sessions where user == ?", (args.user,))
+
+
+def cmd_scrobble(app, dbc, args):
+    auth(app, dbc, args.user)
+    
     scrobbles = []
     for scrobble in args.scrobbles:
-        scrobbles.append(lfm.Scrobble(**vars(scrobble_parser.parse_args(shlex.split(scrobble)))))
+        scrobbles.append(lfm.Scrobble(**vars(parser_ascrobble.parse_args(shlex.split(scrobble)))))
         
     resp = app.track.scrobble(scrobbles)
-    
     ignored = int(resp["@attr"]["ignored"])
     
     if ignored != 0:
@@ -145,7 +113,9 @@ if args.scrobbles is not None:
             print("\nSome of the tracks have failed to scrobble:")
             
         scrobbles = resp["scrobble"]
-        for scrobble in scrobbles:
+        # The above won't be an array if there's was a single scrobble sent, it'll be
+        # the response for that single scrobble itself.
+        for scrobble in scrobbles if isinstance(scrobbles, list) else [scrobbles]:
             code = int(scrobble["ignoredMessage"]["code"])
             
             if code != 0:
@@ -154,9 +124,100 @@ if args.scrobbles is not None:
                 track   = scrobble["track"]["#text"]
                 
                 print("{} - {}: {}".format(artist, track, message))
+                
+
+def cmd_unp(app, dbc, args):
+    auth(app, dbc, args.user)
+    app.track.update_now_playing(args.artist, args.track, album = args.album, duration = args.duration,
+                                 mbid = args.mbid, tracknumber = args.tracknumber,
+                                 albumartist = args.albumartist, context = args.context)
 
 
-if args.nowplaying is not None:
-    nowplaying = unp_parser.parse_args(shlex.split(args.nowplaying))
+API_KEY     = "b3e7abc138f65a43803f887aeb36b9f6"
+SECRET      = "d60a1a4d704b71c0e8e5bac98d793969"
+
+dirs = AppDirs("scrobbler", "hauzer", "1.0.0")
+os.makedirs(dirs.user_data_dir, exist_ok = True)
+
+DB_FILE     = os.path.join(dirs.user_data_dir, "sessions.db")
+LFM_FILE    = os.path.join(dirs.user_data_dir, "lfm.dat")
+
+
+
+parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-playing status updater.")
+subparsers          = parser.add_subparsers()
+parser_session_add  = subparsers.add_parser("session-add", aliases = ["sa"])
+parser_session_list = subparsers.add_parser("session-list", aliases = ["sl"])
+parser_session_rm   = subparsers.add_parser("session-remove", aliases = ["sr"])
+parser_scrobble     = subparsers.add_parser("scrobble", aliases = ["sc"])
+parser_unp          = subparsers.add_parser("update-now-playing", aliases = ["unp"])
+
+
+parser_session_add.add_argument("-u", "--user", metavar = "user")
+group = parser_session_add.add_mutually_exclusive_group()
+group.add_argument("-p", "--password", metavar = "pwd", dest = "pwd")
+group.add_argument("-s", "--session-key", metavar = "sk", dest = "sk")
+parser_session_add.set_defaults(func = cmd_session_add)
+
+parser_session_list.set_defaults(func = cmd_session_list)
+
+parser_session_rm.add_argument("user")
+parser_session_rm.set_defaults(func = cmd_session_rm)
+
+
+parser_ascrobble = argparse.ArgumentParser(usage =  "A scrobble consists of three or more\n"    \
+                                                    "options specified below. Pass these "      \
+                                                    "quoted,\nand as you would to a program.",
+                                           add_help = False)
+parser_ascrobble.add_argument("artist", metavar = "artist")
+parser_ascrobble.add_argument("track", metavar = "track")
+parser_ascrobble.add_argument("timestamp", metavar = "timestamp")
+parser_ascrobble.add_argument("-a", "--album", metavar = "album")
+parser_ascrobble.add_argument("-d", "--duration", metavar = "duration")
+parser_ascrobble.add_argument("-m", "--mbid", metavar = "mbid")
+parser_ascrobble.add_argument("-t", "--track-number", metavar = "track_number", dest = "tracknumber")
+parser_ascrobble.add_argument("-aa", "--album-artist", metavar = "album_artist", dest = "albumartist")
+parser_ascrobble.add_argument("-s", "--stream-id", metavar = "stream_id", dest = "streamid")
+parser_ascrobble.add_argument("-c", "--chosen-by-user", action = "store_true", dest = "chosenbyuser")
+parser_ascrobble.add_argument("-cx", "--context", metavar = "context")
+
+parser_scrobble.add_argument("user")
+parser_scrobble.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
+                             dest = "scrobbles", help = parser_ascrobble.format_help())
+parser_scrobble.set_defaults(func = cmd_scrobble)
+
+
+parser_unp.add_argument("user")
+parser_unp.add_argument("artist", metavar = "artist")
+parser_unp.add_argument("track", metavar = "track")
+parser_unp.add_argument("-a", "--album", metavar = "album")
+parser_unp.add_argument("-d", "--duration", metavar = "duration")
+parser_unp.add_argument("-m", "--mbid", metavar = "mbid")
+parser_unp.add_argument("-t", "--track-number", metavar = "track_number", dest = "tracknumber")
+parser_unp.add_argument("-aa", "--album-artist", metavar = "album_artist", dest = "albumartist")
+parser_unp.add_argument("-cx", "--context", metavar = "context")
+parser_unp.set_defaults(func = cmd_unp)
+
+
+
+args = parser.parse_args()
+
+app = lfm.App(API_KEY, SECRET, LFM_FILE)
+
+db = sqlite3.connect(DB_FILE)
+dbc = db.cursor()
+
+dbc.execute("select exists(select * from sqlite_master " \
+            "where type = \"table\" and name = \"sessions\")")
+if not dbc.fetchone()[0]:
+    dbc.execute("create table sessions (user text primary key, key text)")
+
+try:
+    args.func(app, dbc, args)
+except Error as err:
+    print(err)
     
-    app.track.update_now_playing(**vars(nowplaying))
+
+db.commit()
+dbc.close()
+db.close()
