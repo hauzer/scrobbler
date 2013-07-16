@@ -23,9 +23,9 @@ from setuptools import setup, find_packages
 setup(name              = "scrobbler",
       version           = "1.0.0",
       packages          = find_packages(),
-      install_requires  = ["lfm"],
+      install_requires  = ["appdirs", "lfm"],
 
-      author        = "Никола \"hauzer\" Вукосављевић",
+      author        = "Nikola \"hauzer\" Vukosavljević",
       author_email  = "hauzer@gmx.com",
       description   = "A Last.fm scrobbler and a now-playing status updater.",
       # long_description = "",
