@@ -19,6 +19,7 @@
 
 from appdirs import AppDirs
 import argparse
+from datetime import datetime
 import lfm
 import os.path
 import shlex
@@ -149,7 +150,8 @@ subparsers          = parser.add_subparsers()
 parser_session_add  = subparsers.add_parser("session-add", aliases = ["sa"])
 parser_session_list = subparsers.add_parser("session-list", aliases = ["sl"])
 parser_session_rm   = subparsers.add_parser("session-remove", aliases = ["sr"])
-parser_scrobble     = subparsers.add_parser("scrobble", aliases = ["sc"])
+parser_scrobble     = subparsers.add_parser("scrobble", aliases = ["sc"],
+                                            formatter_class = argparse.RawTextHelpFormatter)
 parser_unp          = subparsers.add_parser("update-now-playing", aliases = ["unp"])
 
 
@@ -165,13 +167,23 @@ parser_session_rm.add_argument("user")
 parser_session_rm.set_defaults(func = cmd_session_rm)
 
 
+class ParserAscrobbleFormatAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string = None):
+        namespace.timestamp = int(datetime.strptime(namespace.timestamp, values).now().timestamp())
+        del namespace.format
+
 parser_ascrobble = argparse.ArgumentParser(usage =  "A scrobble consists of three or more\n"    \
                                                     "options specified below. Pass these "      \
                                                     "quoted,\nand as you would to a program.",
-                                           add_help = False)
+                                           add_help = False, formatter_class = argparse.RawTextHelpFormatter)
 parser_ascrobble.add_argument("artist", metavar = "artist")
 parser_ascrobble.add_argument("track", metavar = "track")
-parser_ascrobble.add_argument("timestamp", metavar = "timestamp")
+parser_ascrobble.add_argument("timestamp", metavar = "timestamp",
+                              help = "\n{0}Time of scrobbling. Can be formatted with -f,\n{0}otherwise it's " \
+                              "an UNIX timestamp.".format("\b" * 18))
+parser_ascrobble.add_argument("-f", "--format", metavar = "format", action = ParserAscrobbleFormatAction,
+                              help = "{0}Specifies the format of the timestamp. Uses\n{0}the same syntax " \
+                              "as Python's strftime().".format("\b" * 18))
 parser_ascrobble.add_argument("-a", "--album", metavar = "album")
 parser_ascrobble.add_argument("-d", "--duration", metavar = "duration")
 parser_ascrobble.add_argument("-m", "--mbid", metavar = "mbid")
