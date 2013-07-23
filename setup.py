@@ -20,7 +20,7 @@
 from setuptools import setup
 
 
-setup(name              = "scrobbler",
+setup(name              = "scrobblerh",
       version           = "1.0.0",
       scripts           = ["scrobbler.py"],
       install_requires  = ["appdirs", "lfmh"],

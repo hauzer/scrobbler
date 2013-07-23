@@ -3,4 +3,4 @@ syntax: glob
 *.dat
 *.db
 dist/*
-scrobbler.egg-info/*
+scrobblerh.egg-info/*
