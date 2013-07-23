@@ -17,13 +17,13 @@
 #
 
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 setup(name              = "scrobbler",
       version           = "1.0.0",
-      packages          = find_packages(),
-      install_requires  = ["appdirs", "lfm"],
+      scripts           = ["scrobbler.py"],
+      install_requires  = ["appdirs", "lfmh"],
 
       author        = "Nikola \"hauzer\" Vukosavljević",
       author_email  = "hauzer@gmx.com",
