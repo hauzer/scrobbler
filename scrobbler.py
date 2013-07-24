@@ -16,10 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-from    appdirs    import AppDirs
+from    appdirs     import AppDirs
 import  argparse
-from    datetime   import datetime
+from    datetime    import datetime
 import  lfm
 import  os.path
 import  shlex
@@ -34,7 +33,7 @@ class Error(Exception):
 
 class ParserScrobbleFormatAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string = None):
-        namespace.timestamp = int(datetime.strptime(namespace.timestamp, values).now().timestamp())
+        namespace.timestamp = int(datetime.strptime(namespace.timestamp, values).timestamp())
         del namespace.format
 
 
@@ -194,7 +193,7 @@ parser_scrobble.add_argument("-cx", "--context", metavar = "context")
 
 parser_cmd_scrobble.add_argument("user")
 parser_cmd_scrobble.add_argument("-s", "--scrobble", action = "append", metavar = "\"artist track tstamp ...\"",
-                             dest = "scrobbles", help = parser_scrobble.format_help())
+                             dest = "scrobbles", required = True, help = parser_scrobble.format_help())
 parser_cmd_scrobble.set_defaults(func = cmd_scrobble)
 
 
@@ -227,8 +226,6 @@ try:
     args.func(app, dbc, args)
 except Error as err:
     print(err)
-except AttributeError:
-    parser.print_help()
 
 db.commit()
 dbc.close()
