@@ -30,6 +30,6 @@ setup(name              = "scrobblerh",
       description   = "A Last.fm scrobbler and a now-playing status updater.",
       # long_description = "",
       license       = "GPLv3",
-      url           = "https://bitbucket.org/hauzer/scrobble/",
-      download_url  = "https://bitbucket.org/hauzer/scrobble/downloads",
+      url           = "https://bitbucket.org/hauzer/scrobbler/",
+      download_url  = "https://bitbucket.org/hauzer/scrobbler/downloads",
       )
