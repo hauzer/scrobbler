@@ -21,7 +21,7 @@ from setuptools import setup
 
 
 setup(name              = "scrobblerh",
-      version           = "1.0.1",
+      version           = "1.0.2",
       scripts           = ["scrobbler.py"],
       install_requires  = ["appdirs", "lfmh"],
 
