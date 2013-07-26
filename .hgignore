@@ -1,0 +1,7 @@
+syntax: glob
+.*
+*.dat
+*.db
+dist/*
+scrobblerh.egg-info/*
+__pycache__/*
