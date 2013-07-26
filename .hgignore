@@ -5,3 +5,5 @@ syntax: glob
 dist/*
 scrobblerh.egg-info/*
 __pycache__/*
+win/win*setupfiles/
+win/winsetups/*
