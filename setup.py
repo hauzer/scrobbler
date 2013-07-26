@@ -17,8 +17,8 @@
 #
 
 
+from    scrobbler   import  VERSION
 from    setuptools  import  setup
-from    version     import  VERSION
 
 
 setup(name              = "scrobblerh",
