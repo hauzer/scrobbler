@@ -1,5 +1,5 @@
 #
-# A Last.fm scrobbler and a now-playing status updater.
+# A command-line Last.fm scrobbler and a now-playing status updater.
 # Copyright (C) 2013  Nikola "hauzer" Vukosavljević
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ setup(name              = "scrobblerh",
 
       author        = "Nikola \"hauzer\" Vukosavljević",
       author_email  = "hauzer@gmx.com",
-      description   = "A Last.fm scrobbler and a now-playing status updater.",
+      description   = "A command-line Last.fm scrobbler and a now-playing status updater.",
       # long_description = "",
       license       = "GPLv3",
       url           = "https://bitbucket.org/hauzer/scrobbler/",

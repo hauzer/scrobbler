@@ -1,5 +1,5 @@
 #
-# A Last.fm scrobbler and a now-playing status updater.
+# A command-line Last.fm scrobbler and a now-playing status updater.
 # Copyright (C) 2013  Никола "hauzer" Вукосављевић
 #
 # This program is free software: you can redistribute it and/or modify
