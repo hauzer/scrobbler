@@ -1,6 +1,6 @@
 #
-# A Last.fm scrobbler and a now-playing status updater.
-# Copyright (C) 2013  Никола "hauzer" Вукосављевић
+# A command-line Last.fm scrobbler and a now-playing status updater.
+# Copyright (C) 2013  Nikola "hauzer" Vukosavljević
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,4 +17,14 @@
 #
 
 
-VERSION = "1.0.2"
+from cx_Freeze import setup, Executable
+import requests.certs
+
+
+build_exe_options = {"include_files": [(requests.certs.where(), 'cacert.pem')]}
+
+setup(name          = "scrobbler",
+      version       = "1.0.3",
+      description   = "My GUI application!",
+      options       = {"build_exe": build_exe_options},
+      executables   = [Executable("../scrobbler.py")])
