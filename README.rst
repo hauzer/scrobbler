@@ -51,7 +51,7 @@ The program can be invoked with one of the following commands:
                 `Unix timestamp <http://www.unixtimestamp.com/>`_.
             
             - [--format, -f]
-                Specifies the format of timestamp using
+                Specifies the format of the timestamp, using
                 the syntax of
                 `strftime() <http://docs.python.org/dev/library/time.html#time.strftime>`_.
             
@@ -72,18 +72,18 @@ The program can be invoked with one of the following commands:
                 Useful only when scrobbling from Last.fm radio.
                 Included for completeness' sake.
             
-            - [--chosed-by-user, -c]
+            - [--chosen-by-user, -c]
                 A flag specifying that the user has chosen to listen to the track,
                 rather than it being chosen for him, by a radio, for example.
             
             - [--context, -cx]
-                This is enabled only for some Last.fm applications and officially
+                This is enabled only for some Last.fm applications and it officially
                 "isn't public". Included for completeness' sake.
 
-- *update-now-playing*
+- *update-now-playing* - Display a track as now-playing on a user's Last.fm profile.
 
     - user
-        The username to scrobble with. It must be in the database.
+        The username to use. It must be in the database.
         Case sensitive.
         
     - artist
@@ -109,7 +109,7 @@ The program can be invoked with one of the following commands:
         Last.fm's services.
     
     - [--context, -cx]
-        This is enabled only for some Last.fm applications and officially
+        This is enabled only for some Last.fm applications and it officially
         "isn't public". Included for completeness' sake.
 
 Examples
@@ -121,6 +121,13 @@ Add a user to the database::
     The Last.fm authentication page will be opened, or its URL printed here.
     Press enter to continue.
     Press enter after granting access.
+    
+    
+    C:\>
+    
+and::
+
+    C:\>scrobbler session-add -u hauzzer -p ********
     
     
     C:\>
@@ -157,6 +164,12 @@ Scrobble two tracks:
     C:\>scrobbler scrobble hauzzer \
         -s "Kansas \"Lamplight Symphony\" 26-07-2013-17:23 -f %d-%m-%Y-%H:%M -a \"Song for America\" -d 657" \
         -s "\"Aziza Mustafa Zadeh\" Boomerang 26-07-2013-17:32 -f %d-%m-%Y-%H:%M -a \"Dance of fire\" -d 262"
+    
+    C:\>
+    
+Remove the user from the database::
+
+    C:\>scrobbler session-remove hauzzer
     
     C:\>
     
