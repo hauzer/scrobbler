@@ -24,6 +24,7 @@ import  os.path
 import  shlex
 import  sqlite3
 import  time
+from    version     import VERSION
 import  webbrowser
 
 
@@ -79,7 +80,7 @@ class ParserScrobbleFormatAction(argparse.Action):
 API_KEY     = "b3e7abc138f65a43803f887aeb36b9f6"
 SECRET      = "d60a1a4d704b71c0e8e5bac98d793969"
 
-dirs = AppDirs("scrobbler", "hauzer", "1.0.0")
+dirs        = AppDirs("scrobbler", "hauzer", VERSION)
 DB_FILE     = os.path.join(dirs.user_data_dir, "sessions.db")
 LFM_FILE    = os.path.join(dirs.user_data_dir, "lfm.dat")
 

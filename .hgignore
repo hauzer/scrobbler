@@ -4,3 +4,4 @@ syntax: glob
 *.db
 dist/*
 scrobblerh.egg-info/*
+__pycache__/*

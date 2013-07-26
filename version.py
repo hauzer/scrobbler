@@ -1,6 +1,6 @@
 #
 # A Last.fm scrobbler and a now-playing status updater.
-# Copyright (C) 2013  Nikola "hauzer" Vukosavljević
+# Copyright (C) 2013  Никола "hauzer" Вукосављевић
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,20 +17,4 @@
 #
 
 
-from    setuptools  import  setup
-from    version     import  VERSION
-
-
-setup(name              = "scrobblerh",
-      version           = VERSION,
-      scripts           = ["scrobbler.py"],
-      install_requires  = ["appdirs", "lfmh"],
-
-      author        = "Nikola \"hauzer\" Vukosavljević",
-      author_email  = "hauzer@gmx.com",
-      description   = "A Last.fm scrobbler and a now-playing status updater.",
-      # long_description = "",
-      license       = "GPLv3",
-      url           = "https://bitbucket.org/hauzer/scrobbler/",
-      download_url  = "https://bitbucket.org/hauzer/scrobbler/downloads",
-      )
+VERSION = "1.0.2"
