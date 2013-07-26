@@ -5,7 +5,7 @@ Usage
 
 The program can be invoked with one of the following commands:
 
-- *session-add* - Add a user to the database.
+- *session-add, sa* - Add a user to the database.
 
     - [--user, -u]
         A Last.fm username.
@@ -21,14 +21,14 @@ The program can be invoked with one of the following commands:
     web-page will be opened for you to grant access to the application.
     
     
-- *session-list* - List database users and session-keys.
+- *session-list, sl* - List database users and session-keys.
 
-- *session-remove* - Remove a user from the database.
+- *session-remove, sr* - Remove a user from the database.
     
     - user
         The user to remove.
 
-- *scrobble* - Scrobble one or more tracks.
+- *scrobble, sc* - Scrobble one or more tracks.
 
     - user
         The username to scrobble with. It must be in the database.
@@ -80,7 +80,7 @@ The program can be invoked with one of the following commands:
                 This is enabled only for some Last.fm applications and it officially
                 "isn't public". Included for completeness' sake.
 
-- *update-now-playing* - Display a track as now-playing on a user's Last.fm profile.
+- *update-now-playing, unp* - Display a track as now-playing on a user's Last.fm profile.
 
     - user
         The username to use. It must be in the database.
@@ -122,13 +122,11 @@ Add a user to the database::
     Press enter to continue.
     Press enter after granting access.
     
-    
     C:\>
     
 and::
 
     C:\>scrobbler session-add -u hauzzer -p ********
-    
     
     C:\>
     
@@ -167,7 +165,7 @@ Scrobble two tracks:
     
     C:\>
     
-Remove the user from the database::
+Remove a user from the database::
 
     C:\>scrobbler session-remove hauzzer
     

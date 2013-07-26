@@ -138,8 +138,6 @@ def cmd_session_add(app, dbc, args):
                        "key":   args.sk,
                        }
     
-    print()
-    
     if not user_exists(dbc, session["name"]):
         dbc.execute("insert into sessions (user, key) values (?, ?)", (session["name"], session["key"]))
     else:
