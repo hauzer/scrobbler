@@ -98,12 +98,12 @@ def main():
     
     def auth(app, dbc, user):
         if user_exists(dbc, user):
-            dbc.execute("select key from sessions where user == ?", (args.user,))
+            dbc.execute("select key from sessions where user == ?", (user,))
             app.sk = dbc.fetchone()[0]
             
         else:
             raise Error("The user \"{}\" wasn't found in the database.\n" \
-                        "Add a session via \"session-add\" first.".format(args.user))
+                        "Add a session via \"session-add\" first.".format(user))
         
     
     #
@@ -194,8 +194,8 @@ def main():
         app.track.update_now_playing(args.artist, args.track, album = args.album, duration = args.duration,
                                      mbid = args.mbid, tracknumber = args.tracknumber,
                                      albumartist = args.albumartist, context = args.context)
-
-
+    
+    
     #
     # Arguments parser building.
     #
@@ -281,7 +281,7 @@ def main():
     
     args = parser.parse_args()
     os.makedirs(dirs.user_data_dir, exist_ok = True)
-    app = lfm.App(API_KEY, SECRET, LFM_FILE)
+    app = lfm.App(API_KEY, SECRET, LFM_FILE, ("scrobbler", VERSION))
     
     db = sqlite3.connect(DB_FILE)
     dbc = db.cursor()

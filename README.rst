@@ -1,7 +1,7 @@
 A command-line Last.fm scrobbler and a now-playing status updater.
 
 Usage
------
+=====
 
 The program can be invoked with one of the following commands:
 
@@ -113,7 +113,7 @@ The program can be invoked with one of the following commands:
         "isn't public". Included for completeness' sake.
 
 Examples
---------
+========
 
 Add a user to the database::
 
