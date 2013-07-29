@@ -42,7 +42,7 @@ setup(name              = "scrobblerh",
       classifiers = [
                      "Development Status :: 3 - Alpha",
                      "Environment :: Console",
-                     "Intended Audience :: End User/Desktop",
+                     "Intended Audience :: End Users/Desktop",
                      "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
                      "Operating System :: OS Independent",
                      "Programming Language :: Python :: 3",
