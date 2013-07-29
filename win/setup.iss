@@ -38,6 +38,7 @@ Source: "{#SourceFilesDir}\python33.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFilesDir}\select.pyd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFilesDir}\sqlite3.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFilesDir}\unicodedata.pyd"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFilesDir}\{#FrozenFile}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"

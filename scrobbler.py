@@ -77,6 +77,7 @@ class ParserScrobbleFormatAction(argparse.Action):
 #
 
 VERSION     = "1.0.3"
+FROZEN_FILE = "frozen"
 
 API_KEY     = "b3e7abc138f65a43803f887aeb36b9f6"
 SECRET      = "d60a1a4d704b71c0e8e5bac98d793969"
@@ -281,7 +282,13 @@ def main():
     
     args = parser.parse_args()
     os.makedirs(dirs.user_data_dir, exist_ok = True)
-    app = lfm.App(API_KEY, SECRET, LFM_FILE, ("scrobbler", VERSION))
+    
+    if os.path.exists(FROZEN_FILE):
+        frozen = True
+    else:
+        frozen = False
+    
+    app = lfm.App(API_KEY, SECRET, LFM_FILE, ("scrobbler", VERSION), frozen)
     
     db = sqlite3.connect(DB_FILE)
     dbc = db.cursor()

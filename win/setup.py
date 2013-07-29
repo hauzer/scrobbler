@@ -17,14 +17,17 @@
 #
 
 
-from cx_Freeze import setup, Executable
-import requests.certs
+from    cx_Freeze import setup, Executable
+import  requests.certs
+import  sys
+
+sys.path.append("..")
+from scrobbler import VERSION
 
 
 build_exe_options = {"include_files": [(requests.certs.where(), 'cacert.pem')]}
 
 setup(name          = "scrobbler",
-      version       = "1.0.3",
-      description   = "My GUI application!",
+      version       = VERSION,
       options       = {"build_exe": build_exe_options},
       executables   = [Executable("../scrobbler.py")])
