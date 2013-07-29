@@ -21,16 +21,30 @@ from    scrobbler   import  VERSION
 from    setuptools  import  setup
 
 
+readme_lines = open("README.rst", "r").read().splitlines()
+
+description = readme_lines[0]
+long_description = "\n".join(readme_lines[2:])
+
 setup(name              = "scrobblerh",
       version           = VERSION,
       scripts           = ["scrobbler.py"],
       install_requires  = ["appdirs", "lfmh"],
 
-      author        = "Nikola \"hauzer\" Vukosavljević",
-      author_email  = "hauzer@gmx.com",
-      description   = "A command-line Last.fm scrobbler and a now-playing status updater.",
-      # long_description = "",
-      license       = "GPLv3",
-      url           = "https://bitbucket.org/hauzer/scrobbler/",
-      download_url  = "https://bitbucket.org/hauzer/scrobbler/downloads",
+      author            = "Nikola \"hauzer\" Vukosavljević",
+      author_email      = "hauzer@gmx.com",
+      description       = description,
+      long_description  = long_description,
+      license           = "GPLv3",
+      url               = "https://bitbucket.org/hauzer/scrobbler/",
+      download_url      = "https://bitbucket.org/hauzer/scrobbler/downloads",
+      
+      classifiers = [
+                     "Development Status :: 3 - Alpha",
+                     "Environment :: Console",
+                     "Intended Audience :: End User/Desktop",
+                     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+                     "Operating System :: OS Independent",
+                     "Programming Language :: Python :: 3",
+                    ]
       )
