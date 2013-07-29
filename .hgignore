@@ -1,9 +1,8 @@
 syntax: glob
-.*
-*.dat
-*.db
 dist/*
-scrobblerh.egg-info/*
-__pycache__/*
 win/build/*
 win/setups/*
+__pycache__/*
+.settings/*
+.*project
+*.egg-info/*
