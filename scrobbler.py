@@ -302,7 +302,6 @@ def main():
             print(err)
     
     db.commit()
-    dbc.close()
     db.close()
 
 
