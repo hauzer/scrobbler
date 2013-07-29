@@ -1,0 +1,17 @@
+v1.0.3, 2013-07-29
+ - Fixed a bug.
+ - Added a user-agent.
+
+
+v1.0.2, 2013-07-24
+ - Cleaned up the output a lot.
+
+
+v1.0.1, 2013-07-24
+ - Fixed a bug where when using the -f option, the time of the scrobble
+   would be always the current time.
+ - Made --scrobble a mandatory "option" when using the 'scrobble' command.
+
+
+v1.0.0, 2013-07-23
+ - The initial release.
