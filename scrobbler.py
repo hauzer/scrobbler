@@ -288,7 +288,7 @@ def main():
     else:
         frozen = False
     
-    app = lfm.App(API_KEY, SECRET, LFM_FILE, ("scrobbler", VERSION), frozen)
+    app = lfm.App(API_KEY, SECRET, LFM_FILE, "scrobbler", VERSION, frozen)
     
     db = sqlite3.connect(DB_FILE)
     dbc = db.cursor()
