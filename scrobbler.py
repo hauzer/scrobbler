@@ -271,8 +271,9 @@ def cmd_unp(app, dbc, args):
 #
 
 parser = argparse.ArgumentParser(description = "A Last.fm scrobbler and a now-playing status updater.",
-                                 formatter_class = argparse.RawTextHelpFormatter)
+                                 formatter_class = NoMetavarRawTextHelpFormatter)
 
+parser.add_argument("-d", "--database")
 subparsers = parser.add_subparsers(metavar = "subcommand", title = "subcommands",
                                    help =  "{0}session-add, sa\n" \
                                    "{0}session-list, sl\n" \
@@ -349,6 +350,7 @@ def main():
     args = parser.parse_args()
     os.makedirs(dirs.user_data_dir, exist_ok = True)
     
+    
     if os.path.exists(FROZEN_FILE):
         frozen = True
     else:
@@ -356,11 +358,18 @@ def main():
     
     app = lfm.App(API_KEY, SECRET, LFM_FILE, "scrobbler", VERSION, frozen)
     
-    db = sqlite3.connect(SESSIONS_DB_FILE)
+    
+    if args.database is None:
+        db_file = SESSIONS_DB_FILE
+    else:
+        db_file = args.database
+    
+    db = sqlite3.connect(db_file)
     dbc = db.cursor()
     
     if not db_table_exists_sessions(dbc):
         db_create_table_sessions(dbc)
+    
     
     try:
         args.func
@@ -371,6 +380,7 @@ def main():
             args.func(app, dbc, args)
         except Error as err:
             print(err)
+    
     
     db.commit()
     db.close()
