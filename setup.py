@@ -48,3 +48,4 @@ setup(name              = "scrobblerh",
                      "Programming Language :: Python :: 3",
                     ]
       )
+
