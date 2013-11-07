@@ -28,7 +28,7 @@ long_description = "\n".join(readme_lines[2:])
 
 setup(name              = "scrobblerh",
       version           = VERSION,
-      scripts           = ["scrobbler.py"],
+      scripts           = ["scrobbler"],
       install_requires  = ["appdirs", "lfmh"],
 
       author            = "Nikola \"hauzer\" Vukosavljević",
