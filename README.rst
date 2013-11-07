@@ -117,25 +117,25 @@ Examples
 
 Add a user to the database::
 
-    C:\>scrobbler session-add
+    $ scrobbler session-add
     The Last.fm authentication page will be opened, or its URL printed here.
     Press enter to continue.
     Press enter after granting access.
     
-    C:\>
+    $
     
 and::
 
-    C:\>scrobbler session-add -u hauzzer -p ********
+    $ scrobbler session-add -u hauzzer -p ********
     
-    C:\>
+    $
     
 List all of the users in the database::
     
-    C:\>scrobbler session-list
+    $ scrobbler session-list
     hauzzer | b431328fc489a4f6e6eeee3e8a0f5537
     
-    C:\>
+    $
     
 Make "`Incomudro - Hymn to the Atman <http://www.last.fm/music/Kansas/_/Incomudro+-+Hymn+to+the+Atman>`_"
 by `Kansas <http://www.last.fm/music/Kansas>`_ display as the now-playing track on the user's
@@ -143,9 +143,9 @@ Last.fm profile.
 
 ::
     
-    C:\>scrobbler update-now-playing hauzzer Kansas "Incomudro - Hymn to the Atman"
+    $ scrobbler update-now-playing hauzzer Kansas "Incomudro - Hymn to the Atman"
     
-    C:\>
+    $
     
 Scrobble two tracks:
 
@@ -159,15 +159,15 @@ Scrobble two tracks:
 
 ::
     
-    C:\>scrobbler scrobble hauzzer \
+    $ scrobbler scrobble hauzzer \
         -s "Kansas \"Lamplight Symphony\" 26-07-2013-17:23 -f %d-%m-%Y-%H:%M -a \"Song for America\" -d 657" \
         -s "\"Aziza Mustafa Zadeh\" Boomerang 26-07-2013-17:32 -f %d-%m-%Y-%H:%M -a \"Dance of fire\" -d 262"
     
-    C:\>
+    $ 
     
 Remove a user from the database::
 
-    C:\>scrobbler session-remove hauzzer
+    $ scrobbler session-remove hauzzer
     
-    C:\>
+    $
     
