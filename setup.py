@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #
 # A command-line Last.fm scrobbler and a now-playing status updater.
 # Copyright (C) 2013  Nikola "hauzer" Vukosavljević
@@ -17,7 +19,7 @@
 #
 
 
-from    scrobbler   import  VERSION
+from    info        import  VERSION
 from    setuptools  import  setup
 
 

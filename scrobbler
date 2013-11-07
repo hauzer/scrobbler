@@ -21,6 +21,7 @@
 from    appdirs     import AppDirs
 import  argparse
 from    datetime    import datetime
+from    info        import VERSION
 import  lfm
 import  os.path
 import  shlex
