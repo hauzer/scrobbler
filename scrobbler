@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 #
 # A command-line Last.fm scrobbler and a now-playing status updater.
