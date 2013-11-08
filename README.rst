@@ -5,86 +5,61 @@ Usage
 
 The program can be invoked with one of the following commands:
 
-- *session-add, sa* - Add a user to the database.
+- *user-add* - Add a user to the list of known users.
 
-    - [--user, -u]
+    - [user]
         A Last.fm username.
     
     - [--password, -p]
         The corresponding password.
-        
-    - [--session-key, -s]
-        A Last.fm session key to be associated with the user name.
-        May be useful for some scripts.
 
+    If a username is provided, you will be prompted for a password.
     If the command is invoked without any arguments, a Last.fm authorization
     web-page will be opened for you to grant access to the application.
     
-    
-- *session-list, sl* - List database users and session-keys.
 
-- *session-remove, sr* - Remove a user from the database.
+- *list-users* - List known users and their corresponding session keys.
+
+- *user-remove* - Remove a user from the list of known users.
     
     - user
         The user to remove.
 
-- *scrobble, sc* - Scrobble one or more tracks.
+
+- *scrobble* - Scrobble a track.
 
     - user
-        The username to scrobble with. It must be in the database.
-        Case sensitive.
-        
-    - [--scrobble, -s]
-        A scrobble. May be specified multiple times. A single scrobble
-        consists of three or more arguments specified below:
-        
-            - artist
-                The name of the artist.
-            
-            - track
-                The name of the track.
-            
-            - timestamp
-                The time of scrobbling. May be formatted with --format
-                below. Otherwise it's a
-                `UTC <http://en.wikipedia.org/wiki/Coordinated_Universal_Time>`_
-                `Unix timestamp <http://www.unixtimestamp.com/>`_.
-            
-            - [--format, -f]
-                Specifies the format of the timestamp, using
-                the syntax of
-                `strftime() <http://docs.python.org/dev/library/time.html#time.strftime>`_.
-            
-            - [--album, -a]
-                The name of the album.
-            
-            - [--mbid, -m]
-                The MBID of the track. This is currently not usable.
-            
-            - [--track-number, -t]
-                The number of the track, as on the album.
-            
-            - [--album-artist, -aa]
-                The album artist tag. As far as I know, this isn't used in any of
-                Last.fm's services.
-                
-            - [--stream-id, -s]
-                Useful only when scrobbling from Last.fm radio.
-                Included for completeness' sake.
-            
-            - [--chosen-by-user, -c]
-                A flag specifying that the user has chosen to listen to the track,
-                rather than it being chosen for him, by a radio, for example.
-            
-            - [--context, -cx]
-                This is enabled only for some Last.fm applications and it officially
-                "isn't public". Included for completeness' sake.
+        The username to scrobble with. If the user isn't known,
+        you will be prompted for a password.
 
-- *update-now-playing, unp* - Display a track as now-playing on a user's Last.fm profile.
+    - artist
+        The name of the artist.
+    
+    - track
+        The name of the track.
+    
+    - time
+        The time of listening. Formatted by --time-format. It may also be *now*,
+        in which case the current time is provided.
+    
+    - [--time-format, -tf]
+        Specifies the format of *time*, using
+        the syntax of
+        `strftime() <http://docs.python.org/dev/library/time.html#time.strftime>`_.
+        Defaults to *%Y-%m-%d.%H:%M*.
+    
+    - [--album, -a]
+        The name of the album.
+
+    - [--duration, -d]
+        The duration of the track in seconds.
+    
+
+- *now-playing* - Update the now-playing status.
 
     - user
-        The username to use. It must be in the database.
-        Case sensitive.
+        The username to use. If the user isn't known,
+        you will be prompted for a password.
         
     - artist
         The name of the artist.
@@ -97,77 +72,63 @@ The program can be invoked with one of the following commands:
     
     - [--duration, -d]
         The duration of the track in seconds.
-    
-    - [--mbid, -m]
-        The MBID of the track. This is currently not usable.
-    
-    - [--track-number, -t]
-        The number of the track, as on the album.
-    
-    - [--album-artist, -aa]
-        The album artist tag. As far as I know, this isn't used in any of
-        Last.fm's services.
-    
-    - [--context, -cx]
-        This is enabled only for some Last.fm applications and it officially
-        "isn't public". Included for completeness' sake.
+
 
 Examples
 ========
 
 Add a user to the database::
 
-    $ scrobbler session-add
+    $ scrobbler user-add
     The Last.fm authentication page will be opened, or its URL printed here.
     Press enter to continue.
     Press enter after granting access.
-    
+    User hauzzer added.
+
     $
     
 and::
 
-    $ scrobbler session-add -u hauzzer -p ********
+    $ scrobbler user-add hauzzer
+    Password:
+    User hauzzer added.
     
     $
     
-List all of the users in the database::
+also::
+
+    $ scrobbler user-add hauzzer --password ******
+    User hauzzer added.
+
+    $
+
+List all known users::
     
-    $ scrobbler session-list
+    $ scrobbler list-users
     hauzzer | b431328fc489a4f6e6eeee3e8a0f5537
     
     $
     
-Make "`Incomudro - Hymn to the Atman <http://www.last.fm/music/Kansas/_/Incomudro+-+Hymn+to+the+Atman>`_"
-by `Kansas <http://www.last.fm/music/Kansas>`_ display as the now-playing track on the user's
-Last.fm profile.
-
-::
+Scrobble a track, "`Lamplight Symphony <http://www.last.fm/music/Kansas/_/Lamplight+Symphony>`_"
+by `Kansas <http://www.last.fm/music/Kansas>`_, which was listened to on 07/15/2013 at 15:32::
     
-    $ scrobbler update-now-playing hauzzer Kansas "Incomudro - Hymn to the Atman"
+    $ scrobbler scrobble hauzzer Kansas "Lamplight Symphony" 2013-15-07.15:32 --album "Song for America" --duration 480
+    Track scrobbled.
+
+    $
+
+Update the now-playing status with "`Incomudro - Hymn to the Atman <http://www.last.fm/music/Kansas/_/Incomudro+-+Hymn+to+the+Atman>`_"
+by `Kansas <http://www.last.fm/music/Kansas>`_.::
+    
+    $ scrobbler now-playing hauzzer Kansas "Incomudro - Hymn to the Atman" --album "Song for America" --duration 720
+    Status updated.
     
     $
     
-Scrobble two tracks:
+Remove a user from the list of known users::
 
-- "`Lamplight Symphony <http://www.last.fm/music/Kansas/_/Lamplight+Symphony>`_"
-  by `Kansas <http://www.last.fm/music/Kansas>`_ at 17:23 26-07-2013,
-  lasting about eight minutes.
-
-- "`Boomerang <http://www.last.fm/music/Aziza+Mustafa+Zadeh/_/Boomerang>`_" by
-  `Aziza Mustafa Zadeh <http://www.last.fm/music/Aziza+Mustafa+Zadeh>`_
-  at 17:32 26-07-2013, lasting about four minutes.
-
-::
-    
-    $ scrobbler scrobble hauzzer \
-        -s "Kansas \"Lamplight Symphony\" 26-07-2013-17:23 -f %d-%m-%Y-%H:%M -a \"Song for America\" -d 657" \
-        -s "\"Aziza Mustafa Zadeh\" Boomerang 26-07-2013-17:32 -f %d-%m-%Y-%H:%M -a \"Dance of fire\" -d 262"
-    
-    $ 
-    
-Remove a user from the database::
-
-    $ scrobbler session-remove hauzzer
+    $ scrobbler remove-user hauzzer
+    User hauzzer removed.
     
     $
     
