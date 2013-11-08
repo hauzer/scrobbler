@@ -20,7 +20,7 @@
 #
 
 
-from    info        import  VERSION
+import  info
 from    setuptools  import  setup
 
 
@@ -29,18 +29,18 @@ readme_lines = open("README.rst", "r").read().splitlines()
 description = readme_lines[0]
 long_description = "\n".join(readme_lines[2:])
 
-setup(name              = "scrobblerh",
-      version           = VERSION,
+setup(name              = "{}h".format(info.NAME),
+      version           = info.VERSION,
       scripts           = ["scrobbler"],
       install_requires  = ["appdirs", "lfmh"],
 
-      author            = "Никола \"hauzer\" Вукосављевић",
+      author            = info.AUTHOR,
       author_email      = "hauzer@gmx.com",
       description       = description,
       long_description  = long_description,
       license           = "GPLv3",
-      url               = "https://bitbucket.org/hauzer/scrobbler/",
-      download_url      = "https://bitbucket.org/hauzer/scrobbler/downloads",
+      url               = "https://bitbucket.org/{}/{}/".format(info.AUTHOR_NICK, info.NAME)
+      download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME)
       
       classifiers = [
                      "Development Status :: 3 - Alpha",
