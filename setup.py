@@ -32,6 +32,7 @@ long_description = "\n".join(readme_lines[2:])
 setup(name              = "{}h".format(info.NAME),
       version           = info.VERSION,
       scripts           = ["scrobbler"],
+      py_modules        = ["info"],
       install_requires  = ["appdirs", "lfmh"],
 
       author            = info.AUTHOR,
