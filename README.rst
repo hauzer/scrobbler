@@ -40,7 +40,7 @@ The program can be invoked with one of the following commands:
     
     - time
         The time of listening. Formatted by --time-format. It may also be *now*,
-        in which case the current time is provided.
+        in which case the current time is used.
     
     - [--time-format, -tf]
         Specifies the format of *time*, using
@@ -77,7 +77,7 @@ The program can be invoked with one of the following commands:
 Examples
 ========
 
-Add a user to the database::
+Add a user to the list of known users::
 
     $ scrobbler user-add
     The Last.fm authentication page will be opened, or its URL printed here.
