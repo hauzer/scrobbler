@@ -39,8 +39,8 @@ setup(name              = "{}h".format(info.NAME),
       description       = description,
       long_description  = long_description,
       license           = "GPLv3",
-      url               = "https://bitbucket.org/{}/{}/".format(info.AUTHOR_NICK, info.NAME)
-      download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME)
+      url               = "https://bitbucket.org/{}/{}/".format(info.AUTHOR_NICK, info.NAME),
+      download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME),
       
       classifiers = [
                      "Development Status :: 3 - Alpha",
