@@ -1,3 +1,5 @@
+# coding=utf-8
+
 #
 # A command-line Last.fm scrobbler and a now-playing status updater.
 # Copyright (C) 2013  Никола "hauzer" Вукосављевић
