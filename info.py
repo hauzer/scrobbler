@@ -18,5 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-VERSION = "1.0.3"
+
+NAME        = "scrobbler"
+VERSION     = "1.0.3"
+
+AUTHOR_FIRST_NAME   = "Никола"
+AUTHOR_LAST_NAME    = "Вукосављевић"
+AUTHOR_NICK         = "hauzer"
+AUTHOR              = "{} \"{}\" {}".format(AUTHOR_FIRST_NAME, AUTHOR_NICK, AUTHOR_LAST_NAME)
 
