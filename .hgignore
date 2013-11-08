@@ -1,8 +1,0 @@
-syntax: glob
-dist/*
-win/build/*
-win/setups/*
-__pycache__/*
-.settings/*
-.*project
-*.egg-info/*
