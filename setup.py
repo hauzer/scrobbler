@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 #
 # A command-line Last.fm scrobbler and a now-playing status updater.
-# Copyright (C) 2013  Nikola "hauzer" Vukosavljević
+# Copyright (C) 2013  Никола "hauzer" Вукосављевић
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +34,7 @@ setup(name              = "scrobblerh",
       scripts           = ["scrobbler"],
       install_requires  = ["appdirs", "lfmh"],
 
-      author            = "Nikola \"hauzer\" Vukosavljević",
+      author            = "Никола \"hauzer\" Вукосављевић",
       author_email      = "hauzer@gmx.com",
       description       = description,
       long_description  = long_description,
