@@ -33,7 +33,7 @@ setup(name              = "{}h".format(info.NAME),
       version           = info.VERSION,
       scripts           = ["scrobbler"],
       py_modules        = ["info"],
-      install_requires  = ["appdirs", "lfmh"],
+      install_requires  = ["appdirs", "docopt", "lfmh"],
 
       author            = info.AUTHOR,
       author_email      = "hauzer@gmx.com",
