@@ -5,7 +5,7 @@ Usage
 
 The program can be invoked with one of the following commands:
 
-- *user-add* - Add a user to the list of known users.
+- *add-user* - Add a user to the list of known users.
 
     - [user]
         A Last.fm username.
