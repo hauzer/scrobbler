@@ -79,7 +79,7 @@ Examples
 
 Add a user to the list of known users::
 
-    $ scrobbler user-add
+    $ scrobbler add-user
     The Last.fm authentication page will be opened, or its URL printed here.
     Press enter to continue.
     Press enter after granting access.
@@ -89,7 +89,7 @@ Add a user to the list of known users::
     
 and::
 
-    $ scrobbler user-add hauzzer
+    $ scrobbler add-user hauzzer
     Password:
     User hauzzer added.
     
@@ -97,7 +97,7 @@ and::
     
 also::
 
-    $ scrobbler user-add hauzzer --password ******
+    $ scrobbler add-user hauzzer --password ******
     User hauzzer added.
 
     $
