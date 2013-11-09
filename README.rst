@@ -20,7 +20,7 @@ The program can be invoked with one of the following commands:
 
 - *list-users* - List known users and their corresponding session keys.
 
-- *user-remove* - Remove a user from the list of known users.
+- *remove-user* - Remove a user from the list of known users.
     
     - user
         The user to remove.
