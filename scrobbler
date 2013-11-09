@@ -163,7 +163,7 @@ usage: scrobbler list-users
 
 def cmd_remove_user(app, dbc, args):
     """
-Remove a user from the list of know users.
+Remove a user from the list of known users.
 
 usage: scrobbler remove-user <user>
     
