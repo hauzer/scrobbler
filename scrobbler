@@ -62,10 +62,13 @@ LIBLFM_FILE     = os.path.join(dirs.user_data_dir, "lfm.db")
 
 class Error(Exception):
     """
-    An error thrown by one of the subcommands and intended to be printed for the user.
+    An error intended to be printed for the user.
     
     """
     
+    def __init__(self, msg):
+        super().__init__("Error: {}.\n".format(msg))
+
     pass
 
 
@@ -244,13 +247,23 @@ def main():
     
     if not db_table_exists_sessions(dbc):
         db_create_table_sessions(dbc)
-    
-    cmd = globals()["cmd_{}".format(args["<command>"].replace("-", "_"))]
-    cmd_args = docopt(cmd.__doc__, argv = [args["<command>"]] + args["<args>"])
+
     try:
-        cmd(app, dbc, cmd_args)
-    except (Error, lfm.exceptions.RequestError) as err:
-        print("Error: {}\n".format(err))
+        cmd_name = "cmd_{}".format(args["<command>"].replace("-", "_"))
+        try:
+            cmd = globals()[cmd_name]
+        except KeyError as e:
+            raise Error("Unkown command '{}'".format(args["<command>"]))
+        else:
+            cmd_args = docopt(cmd.__doc__, argv = [args["<command>"]] + args["<args>"])   
+
+        try:
+            cmd(app, dbc, cmd_args)
+        except:
+            raise
+
+    except (Error, lfm.exceptions.RequestError) as e:
+        print(e)
     
     db.commit()
     db.close()
