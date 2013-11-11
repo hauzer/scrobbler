@@ -52,7 +52,8 @@ The program can be invoked with one of the following commands:
         The name of the album.
 
     - [--duration, -d]
-        The duration of the track in seconds.
+        Has the format of XXhYYmZZs. At least one of those has to be present,
+        but any number of them can be specified, and in any order.
     
 
 - *now-playing* - Update the now-playing status.
@@ -71,7 +72,8 @@ The program can be invoked with one of the following commands:
         The name of the album.
     
     - [--duration, -d]
-        The duration of the track in seconds.
+        Has the format of XXhYYmZZs. At least one of those has to be present,
+        but any number of them can be specified, and in any order.
 
 
 Examples
@@ -112,7 +114,7 @@ List all known users::
 Scrobble a track, "`Lamplight Symphony <http://www.last.fm/music/Kansas/_/Lamplight+Symphony>`_"
 by `Kansas <http://www.last.fm/music/Kansas>`_, which was listened to on 07/15/2013 at 15:32::
     
-    $ scrobbler scrobble hauzzer Kansas "Lamplight Symphony" 2013-15-07.15:32 --album "Song for America" --duration 480
+    $ scrobbler scrobble hauzzer Kansas "Lamplight Symphony" 2013-15-07.15:32 -a "Song for America" -d 8m16s
     Track scrobbled.
 
     $
@@ -120,7 +122,7 @@ by `Kansas <http://www.last.fm/music/Kansas>`_, which was listened to on 07/15/2
 Update the now-playing status with "`Incomudro - Hymn to the Atman <http://www.last.fm/music/Kansas/_/Incomudro+-+Hymn+to+the+Atman>`_"
 by `Kansas <http://www.last.fm/music/Kansas>`_.::
     
-    $ scrobbler now-playing hauzzer Kansas "Incomudro - Hymn to the Atman" --album "Song for America" --duration 720
+    $ scrobbler now-playing hauzzer Kansas "Incomudro - Hymn to the Atman" -a "Song for America" -d 12m17s
     Status updated.
     
     $

@@ -46,6 +46,7 @@ from    getpass     import getpass
 import  info
 import  lfm
 import  os.path
+import  re
 import  sqlite3
 import  sys
 import  time
@@ -70,6 +71,26 @@ class Error(Exception):
         super().__init__("Error: {}.\n".format(msg))
 
     pass
+
+
+def duration_to_seconds(string):
+    if string is None:
+        return None
+
+    durations = re.findall("\d+[hms]", string)
+    seconds = 0
+    for duration in durations:
+        time = int(duration[:-1])
+        unit = duration[-1]
+
+        if unit == "m":
+            time *= 60
+        elif unit == "h":
+            time *= 60**2
+
+        seconds += time
+
+    return seconds
 
 
 def db_table_exists_sessions(dbc):
@@ -182,12 +203,14 @@ def cmd_scrobble(app, dbc, args):
 Scrobble a track.
 
 usage: scrobbler scrobble <user> <artist> <track> <time> [--time-format=<format>]
-                          [--album=<name>] [--duration=<seconds>]
+                          [--album=<name>] [--duration=<duration>]
 
 options:
     -tf <format>, --time-format=<format>  [default: %Y-%m-%d.%H:%M]
     -a <name>, --album=<name>
-    -d <seconds>, --duration=<seconds>
+    -d <duration>, --duration=<duration>  Has the format of XXhYYmZZs. At least one of
+                                          those has to be present, but any number of them
+                                          can be specified, and in any order.
 
     """
 
@@ -199,11 +222,11 @@ options:
         timestamp = datetime.strptime(args["<time>"], args["--time-format"]).timestamp()
 
     scrobble = lfm.Scrobble(args["<artist>"], args["<track>"], int(timestamp),
-                            album = args["--album"], duration = args["--duration"])
+                            album = args["--album"], duration = duration_to_seconds(args["--duration"]))
 
     resp = app.track.scrobble([scrobble]) 
     if int(resp["@attr"]["ignored"]) != 0:
-        raise Error("Failed to scrobble: {}".format(resp["scrobble"]["ignoredMessage"]["#text"]))
+        raise Error(resp["scrobble"]["ignoredMessage"]["#text"])
 
     print("Track scrobbled.\n")
     
@@ -212,17 +235,18 @@ def cmd_now_playing(app, dbc, args):
     """
 Update the now-playing status.
     
-usage: scrobbler now-playing <user> <artist> <track> [--album=<name>] [--duration=<seconds>]
+usage: scrobbler now-playing <user> <artist> <track> [--album=<name>] [--duration=<duration>]
 
 options:
     -a <name>, --album=<name>
-    -d <seconds>, --duration=<seconds>
-
+    -d <duration>, --duration=<duration>  Has the format of XXhYYmZZs. At least one of
+                                          those has to be present, but any number of them
+                                          can be specified, and in any order.
     """
     
     auth(app, dbc, args["<user>"])
     app.track.update_now_playing(args["<artist>"], args["<track>"],
-                                 album = args["--album"], duration = args["--duration"])
+                                 album = args["--album"], duration = duration_to_seconds(args["--duration"]))
     print("Status updated.\n")
 
 
