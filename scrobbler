@@ -278,8 +278,8 @@ def main():
             cmd = globals()[cmd_name]
         except KeyError as e:
             raise Error("Unkown command '{}'".format(args["<command>"]))
-        else:
-            cmd_args = docopt(cmd.__doc__, argv = [args["<command>"]] + args["<args>"])   
+
+        cmd_args = docopt(cmd.__doc__, argv = [args["<command>"]] + args["<args>"])   
 
         try:
             cmd(app, dbc, cmd_args)
