@@ -277,7 +277,7 @@ def main():
         try:
             cmd = globals()[cmd_name]
         except KeyError as e:
-            raise Error("Unkown command '{}'".format(args["<command>"]))
+            raise Error("Unknown command '{}'".format(args["<command>"]))
 
         cmd_args = docopt(cmd.__doc__, argv = [args["<command>"]] + args["<args>"])   
 
