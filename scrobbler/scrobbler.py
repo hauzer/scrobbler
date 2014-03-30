@@ -39,18 +39,20 @@ commands:
 
 """
 
-from    appdirs     import  AppDirs
-from    datetime    import  datetime
-from    docopt      import  docopt
-from    getpass     import  getpass
-from    scrobbler   import  info
-import  lfm
-import  os.path
-import  re
-import  sqlite3
-import  sys
-import  time
-import  webbrowser
+from . import info
+
+from appdirs import AppDirs
+from docopt import docopt
+from lfm import lfm
+
+from getpass import getpass
+from datetime import datetime
+import time
+import os.path
+import sys
+import re
+import sqlite3
+import webbrowser
 
 
 API_KEY     = "b3e7abc138f65a43803f887aeb36b9f6"
@@ -122,11 +124,11 @@ def auth(app, dbc, user):
     if not user_exists(dbc, user):
         pwd = getpass()
         session = app.auth.get_mobile_session(user, pwd)
-        app.sk = session["key"]
+        app.session_key = session["key"]
 
     else:
         dbc.execute("select key from sessions where user == ?", (user,))
-        app.sk = dbc.fetchone()[0]
+        app.session_key = dbc.fetchone()[0]
 
 
 def cmd_add_user(app, dbc, args):
