@@ -43,7 +43,8 @@ from . import info
 
 from appdirs import AppDirs
 from docopt import docopt
-from lfm import lfm
+from lastfm import lfm
+import lastfm.exceptions
 
 from getpass import getpass
 from datetime import datetime
@@ -288,7 +289,7 @@ def main():
         except:
             raise
 
-    except (Error, lfm.exceptions.RequestError) as e:
+    except (Error, lastfm.exceptions.RequestError) as e:
         print(e)
     
     db.commit()
