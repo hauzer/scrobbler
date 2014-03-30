@@ -20,8 +20,8 @@
 #
 
 
-import  info
-from    setuptools  import  setup
+from    scrobbler   import  info
+from    setuptools  import  setup, find_packages
 
 
 readme_lines = open("README.rst", "r").read().splitlines()
@@ -31,9 +31,13 @@ long_description = "\n".join(readme_lines[2:])
 
 setup(name              = "{}h".format(info.NAME),
       version           = info.VERSION,
-      scripts           = ["scrobbler"],
-      py_modules        = ["info"],
+      packages          = find_packages(),
       install_requires  = ["appdirs", "docopt", "lfmh"],
+      entry_points      = {
+        "console_scripts": [
+            "scrobbler = scrobbler.scrobbler:main"
+        ],
+      },
 
       author            = info.AUTHOR,
       author_email      = "hauzer@gmx.com",
@@ -50,6 +54,6 @@ setup(name              = "{}h".format(info.NAME),
                      "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
                      "Operating System :: OS Independent",
                      "Programming Language :: Python :: 3",
-                    ]
+                    ],
       )
 
