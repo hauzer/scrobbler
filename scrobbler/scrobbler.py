@@ -39,11 +39,11 @@ commands:
 
 """
 
-from    appdirs     import AppDirs
-from    datetime    import datetime
-from    docopt      import docopt
-from    getpass     import getpass
-import  info
+from    appdirs     import  AppDirs
+from    datetime    import  datetime
+from    docopt      import  docopt
+from    getpass     import  getpass
+from    scrobbler   import  info
 import  lfm
 import  os.path
 import  re
