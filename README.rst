@@ -1,5 +1,3 @@
-A command-line Last.fm scrobbler and a now-playing status updater.
-
 Usage
 =====
 
