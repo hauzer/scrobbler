@@ -24,11 +24,6 @@ from    scrobbler   import  info
 from    setuptools  import  setup, find_packages
 
 
-readme_lines = open("README.rst", "r").read().splitlines()
-
-description = readme_lines[0]
-long_description = "\n".join(readme_lines[2:])
-
 setup(name              = "{}h".format(info.NAME),
       version           = info.VERSION,
       packages          = find_packages(),
@@ -41,8 +36,8 @@ setup(name              = "{}h".format(info.NAME),
 
       author            = info.AUTHOR,
       author_email      = "hauzer@gmx.com",
-      description       = description,
-      long_description  = long_description,
+      description       = "A command-line Last.fm scrobbler and a now-playing status updater.",
+      long_description  = open("README.rst", "r").read(),
       license           = "GPLv3",
       url               = "https://bitbucket.org/{}/{}/".format(info.AUTHOR_NICK, info.NAME),
       download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME),
