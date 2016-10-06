@@ -142,7 +142,7 @@ usage: scrobbler add-user [[<user> [--password=<password>]]|[--dont-invoke-brows
 
 options:
     -p <password>,  --password=<password>
-    -dib, --dont-invoke-browser             When invoking the command without arguments,
+    -x, --dont-invoke-browser               When invoking the command without arguments,
                                             always show the authentication URL; never try
                                             automatically opening it.
     """
@@ -212,11 +212,11 @@ usage: scrobbler scrobble <user> <artist> <track> <time> [--time-format=<format>
                           [--album=<name>] [--duration=<duration>]
 
 options:
-    -tf <format>, --time-format=<format>  [default: %Y-%m-%d.%H:%M]
+    -f <format>, --time-format=<format>     [default: %Y-%m-%d.%H:%M]
     -a <name>, --album=<name>
-    -d <duration>, --duration=<duration>  Has the format of XXhYYmZZs. At least one of
-                                          those has to be present, but any number of them
-                                          can be specified, and in any order.
+    -d <duration>, --duration=<duration>    Has the format of XXhYYmZZs. At least one of
+                                            those has to be present, but any number of them
+                                            can be specified, and in any order.
     """
 
     auth(app, dbc, args["<user>"])
