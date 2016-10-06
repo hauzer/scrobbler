@@ -38,6 +38,11 @@ commands:
     now-playing     Update the now-playing status.
 """
 
+import sys
+if sys.version_info[0] != 3:
+    print("Python 3 required.")
+    exit()
+
 from . import info
 
 from appdirs import AppDirs
@@ -49,7 +54,6 @@ from getpass import getpass
 from datetime import datetime
 import time
 import os.path
-import sys
 import re
 import sqlite3
 import webbrowser

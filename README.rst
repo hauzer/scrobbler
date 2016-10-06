@@ -1,3 +1,5 @@
+Note: Python 3 is required!
+
 Usage
 =====
 
