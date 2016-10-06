@@ -36,7 +36,6 @@ commands:
     remove-user     Remove a user from the list of known users.
     scrobble        Scrobble a track.
     now-playing     Update the now-playing status.
-
 """
 
 from . import info
@@ -67,11 +66,10 @@ LIBLFM_FILE     = os.path.join(dirs.user_data_dir, "lfm.db")
 class Error(Exception):
     """
     An error intended to be printed for the user.
-    
     """
     
     def __init__(self, msg):
-        super().__init__("Error: {}.\n".format(msg))
+        super().__init__("Error: {}.".format(msg))
 
     pass
 
@@ -143,7 +141,6 @@ options:
     -dib, --dont-invoke-browser             When invoking the command without arguments,
                                             always show the authentication URL; never try
                                             automatically opening it.
-
     """
     
     if args["<user>"] is None:
@@ -175,7 +172,7 @@ options:
 
 
     dbc.execute("insert into sessions (user, key) values (?, ?)", (session["name"], session["key"]))
-    print("User {} added.\n".format(session["name"]))
+    print("User {} added.".format(session["name"]))
 
 
 def cmd_list_users(app, dbc, args):
@@ -183,7 +180,6 @@ def cmd_list_users(app, dbc, args):
 List all known users.
 
 usage: scrobbler list-users
-    
     """
    
     dbc.execute("select * from sessions")
@@ -197,12 +193,11 @@ def cmd_remove_user(app, dbc, args):
 Remove a user from the list of known users.
 
 usage: scrobbler remove-user <user>
-    
     """
 
     exit_if_user_not_exists(dbc, args["<user>"])
     dbc.execute("delete from sessions where user == ?", (args["<user>"],))
-    print("User {} removed.\n".format(args["<user>"]))
+    print("User {} removed.".format(args["<user>"]))
 
 
 def cmd_scrobble(app, dbc, args):
@@ -218,7 +213,6 @@ options:
     -d <duration>, --duration=<duration>  Has the format of XXhYYmZZs. At least one of
                                           those has to be present, but any number of them
                                           can be specified, and in any order.
-
     """
 
     auth(app, dbc, args["<user>"])
@@ -235,7 +229,7 @@ options:
     if int(resp["@attr"]["ignored"]) != 0:
         raise Error(resp["scrobble"]["ignoredMessage"]["#text"])
 
-    print("Track scrobbled.\n")
+    print("Track scrobbled.")
     
 
 def cmd_now_playing(app, dbc, args):
@@ -254,7 +248,7 @@ options:
     auth(app, dbc, args["<user>"])
     app.track.update_now_playing(args["<artist>"], args["<track>"],
                                  album = args["--album"], duration = duration_to_seconds(args["--duration"]))
-    print("Status updated.\n")
+    print("Status updated.")
 
 
 def main():
