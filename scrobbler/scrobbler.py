@@ -136,24 +136,28 @@ def cmd_add_user(app, dbc, args):
     """
 Add a user to the list of known users.
     
-usage: scrobbler add-user [<user> [--password=<password>]]
+usage: scrobbler add-user [[<user> [--password=<password>]]|[--dont-invoke-browser]]
 
 options:
     -p <password>,  --password=<password>
+    -dib, --dont-invoke-browser             When invoking the command without arguments,
+                                            always show the authentication URL; never try
+                                            automatically opening it.
 
     """
     
     if args["<user>"] is None:
         token = app.auth.get_token()
         
-        input("The Last.fm authentication page will be opened, or its URL printed here.\nPress enter to continue.")
-        
-        try:
-            webbrowser.open(token.url)
-        except webbrowser.Error:
-            print(token.url)
+        if args["--dont-invoke-browser"]:
+            print("Last.fm authentication URL: {}".format(token.url))
+        else:
+            input("The Last.fm authentication page will be opened, or its URL printed here.\nPress enter to continue.")
+            try:
+                webbrowser.open(token.url)
+            except webbrowser.Error:
+                print(token.url)
     
-        time.sleep(1)
         input("Press enter after granting access.")
         session = app.auth.get_session(token)
     
@@ -298,4 +302,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
