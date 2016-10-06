@@ -20,7 +20,7 @@
 
 
 NAME        = "scrobbler"
-VERSION     = "1.1.3"
+VERSION     = "1.1.3-1"
 
 AUTHOR_FIRST_NAME   = "Никола"
 AUTHOR_LAST_NAME    = "Вукосављевић"
