@@ -144,7 +144,7 @@ options:
     -p <password>,  --password=<password>
     -x, --dont-invoke-browser               When invoking the command without arguments,
                                             always show the authentication URL; never try
-                                            automatically opening it.
+                                            to automatically open it.
     """
     
     if args["<user>"] is None:
