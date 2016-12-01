@@ -35,12 +35,12 @@ setup(name              = "{}h".format(info.NAME),
       },
 
       author            = info.AUTHOR,
-      author_email      = "hauzer@gmx.com",
+      author_email      = "hauzer.nv@gmail.com",
       description       = "A command-line Last.fm scrobbler and a now-playing status updater.",
       long_description  = open("README.rst", "r").read(),
       license           = "GPLv3",
-      url               = "https://bitbucket.org/{}/{}/".format(info.AUTHOR_NICK, info.NAME),
-      download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME),
+      url               = "https://github.com/{}/{}/".format(info.AUTHOR_NICK, info.NAME),
+      # download_url      = "https://bitbucket.org/{}/{}/downloads".format(info.AUTHOR_NICK, info.NAME),
       
       classifiers = [
                      "Development Status :: 4 - Beta",
