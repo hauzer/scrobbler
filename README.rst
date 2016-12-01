@@ -16,7 +16,11 @@ The program can be invoked with one of the following commands:
     If a username is provided, you will be prompted for a password.
     If the command is invoked without any arguments, a Last.fm authorization
     web-page will be opened for you to grant access to the application.
-    
+
+    - [--dont-invoke-browser, -x]
+        When invoking the command without arguments, always show the
+        authentication URL; never try to automatically open it.
+
 
 - *list-users* - List known users and their corresponding session keys.
 
