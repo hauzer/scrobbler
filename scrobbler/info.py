@@ -20,10 +20,9 @@
 
 
 NAME        = "scrobbler"
-VERSION     = "1.1.3-1"
+VERSION     = "1.1.4"
 
 AUTHOR_FIRST_NAME   = "Никола"
 AUTHOR_LAST_NAME    = "Вукосављевић"
 AUTHOR_NICK         = "hauzer"
 AUTHOR              = "{} \"{}\" {}".format(AUTHOR_FIRST_NAME, AUTHOR_NICK, AUTHOR_LAST_NAME)
-
