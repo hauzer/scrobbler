@@ -208,8 +208,9 @@ def cmd_scrobble(app, dbc, args):
     """
 Scrobble a track.
 
-usage: scrobbler scrobble <user> <artist> <track> <time> [--time-format=<format>]
-                          [--album=<name>] [--duration=<duration>]
+usage: scrobbler scrobble [--album=<name>] [--duration=<duration>] [--time-format=<format>]
+                          [--] <user> <artist> <track> <time>
+
 
 options:
     -f <format>, --time-format=<format>     [default: %Y-%m-%d.%H:%M]
@@ -240,7 +241,7 @@ def cmd_now_playing(app, dbc, args):
     """
 Update the now-playing status.
     
-usage: scrobbler now-playing <user> <artist> <track> [--album=<name>] [--duration=<duration>]
+usage: scrobbler now-playing [--album=<name>] [--duration=<duration>] [--] <user> <artist> <track>
 
 options:
     -a <name>, --album=<name>
